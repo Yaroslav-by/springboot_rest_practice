@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,39 +26,39 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return allEmployees;
     }
 
-//    @Override
-//    public void saveEmployee(Employee employee) {
-//
-//        Session session = sessionFactory.getCurrentSession();
-//
-//        session.saveOrUpdate(employee);
-//
-//    }
-//
-//    @Override
-//    public Employee getEmployee(int id) {
-//
-//        Session session = sessionFactory.getCurrentSession();
-//
+    @Override
+    public void saveEmployee(Employee employee) {
+
+        Session session = entityManager.unwrap(Session.class);
+
+        session.saveOrUpdate(employee);
+
+    }
+
+    @Override
+    public Employee getEmployee(int id) {
+
+        Session session = entityManager.unwrap(Session.class);
+
+        Employee employee = session.get(Employee.class, id);
+
+        return employee;
+    }
+
+    @Override
+    public void deleteEmployee(int id) {
+
+        Session session = entityManager.unwrap(Session.class);
+
+//        First way
 //        Employee employee = session.get(Employee.class, id);
-//
-//        return employee;
-//    }
-//
-//    @Override
-//    public void deleteEmployee(int id) {
-//
-//        Session session = sessionFactory.getCurrentSession();
-//
-////        First way
-////        Employee employee = session.get(Employee.class, id);
-////        session.delete(employee);
-//
-////        Second way
-//        Query<Employee> query = session.createQuery("delete from Employee where id=:employeeID");
-//        query.setParameter("employeeID", id);
-//        query.executeUpdate();
-//
-//    }
+//        session.delete(employee);
+
+//        Second way
+        Query<Employee> query = session.createQuery("delete from Employee where id=:employeeID");
+        query.setParameter("employeeID", id);
+        query.executeUpdate();
+
+    }
 
 }
